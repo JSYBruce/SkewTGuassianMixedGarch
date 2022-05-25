@@ -1,4 +1,4 @@
-# Garch-Mixed-T-Gaussian-Distribution
+# Garch-Mixed-SkewT-Gaussian-Distribution
 This project builds a Garch model with two sigmas (one follows T-distribution, the other follows Gaussian-distribution).
 
 You can copy this folder into your Jupyter notebook. Then you can create a new ipynb file, and import functions as the following:
