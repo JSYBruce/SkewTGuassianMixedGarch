@@ -370,6 +370,9 @@ class ARCHModel():
             vp, resids1, resids2, sigma1, sigma2, backcast, var_bounds
         )
         
+        resids1 = self.resids(mp[0])
+        resids2 = self.resids(mp[1])
+        
         np.savetxt("sigma1.csv", sigma1, delimiter=",")
         np.savetxt("sigma2.csv", sigma2, delimiter=",")
         import pickle
