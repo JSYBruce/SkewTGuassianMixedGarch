@@ -90,8 +90,6 @@ class DoubleNormal():
             +\frac{x^{2}}{\sigma^{2}}\right)
 
         """
-        mu1 = parameters[0]
-        mu2 = parameters[1]
         
         eta = parameters[2]
         lam = parameters[3]
@@ -100,7 +98,7 @@ class DoubleNormal():
         ))
         const_a = float(4 * lam * const_c) * (eta - 2) / (eta - 1)
         const_b = (1 + 3 * lam ** 2 - const_a ** 2) ** 0.5
-        resids = (resids1 - mu1) / sigma1 ** 0.5
+        resids = (resids1) / sigma1 ** 0.5
         skewt_pdf = const_b * const_c / (sigma1**0.5)
         if abs(lam) >= 1.0:
             lam = sign(lam) * (1.0 - 1e-6)
@@ -110,7 +108,7 @@ class DoubleNormal():
         skewt_pdf *= (1 + llf_resid / (eta - 2))**(-(eta + 1) / 2 )
         
         
-        lls = log( weight * skewt_pdf + (1-weight)/sqrt(2*pi*sigma2)*exp(-0.5*(resids2 - mu2)**2 /sigma2) )
+        lls = log( weight * skewt_pdf + (1-weight)/sqrt(2*pi*sigma2)*exp(-0.5*(resids2)**2 /sigma2) )
         if individual:
             return lls
         else:
