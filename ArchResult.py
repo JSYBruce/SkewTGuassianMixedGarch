@@ -118,21 +118,6 @@ class ARCHModelFixedResult(_SummaryRepr):
         self._index = dep_var.index
         self._volatility = volatility
 
-
-        import pickle
-        with open("sigma1_data", "rb") as fp:   #Pickling
-            self.sigma1 = pickle.load(fp)
-        
-        with open("sigma2_data", "rb") as fp:   #Pickling
-            self.sigma2 = pickle.load(fp)
-            
-        with open("resids1", "rb") as fp:   #Pickling
-            self.resids1 = pickle.load(fp)
-        
-        with open("resids2", "rb") as fp:   #Pickling
-            self.resids2 = pickle.load(fp)
-            
-
     def summary(self) -> Summary:
         """
         Constructs a summary of the results from a fit model.
@@ -349,6 +334,18 @@ class ARCHModelResult(ARCHModelFixedResult):
         self.cov_type: str = cov_type
         self._optim_output = optim_output
         self._nobs = self.model._fit_y.shape[0]
+        import pickle
+        with open("sigma1_data", "rb") as fp:   #Pickling
+            self.sigma1 = pickle.load(fp)
+        
+        with open("sigma2_data", "rb") as fp:   #Pickling
+            self.sigma2 = pickle.load(fp)
+            
+        with open("resids1", "rb") as fp:   #Pickling
+            self.resids1 = pickle.load(fp)
+        
+        with open("resids2", "rb") as fp:   #Pickling
+            self.resids2 = pickle.load(fp)
 
     @cached_property
     def scale(self) -> float:
@@ -488,8 +485,8 @@ class ARCHModelResult(ARCHModelFixedResult):
             param_table_data.append(row)
 
         mc = self.model.num_params
-        vc = self.model.volatility.num_params + 3
-        dc = self.model.distribution.num_params 
+        vc = self.model.volatility.num_params + 2
+        dc = self.model.distribution.num_params
         counts = (mc, vc, dc)
         titles = ("Mean Model", "Volatility Model", "Distribution")
         total = 0
@@ -620,16 +617,22 @@ class ARCHModelResult(ARCHModelFixedResult):
         """
         return self._nobs
     
+    
     @cached_property
     def param_cov(self) -> pd.DataFrame:
         """Parameter covariance"""
+        print("param_cov")
+        self.cov_type = "robust"
         if self._param_cov is not None:
+            print("param_cov_None")
             param_cov = self._param_cov
         else:
             params = np.asarray(self.params)
             if self.cov_type == "robust":
+                print("robust")
                 param_cov = self.model.compute_param_cov(params)
             else:
+                print("not robust")
                 param_cov = self.model.compute_param_cov(params, robust=False)
         return pd.DataFrame(param_cov, columns=self._names, index=self._names)
     
