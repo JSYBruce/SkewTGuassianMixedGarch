@@ -9,7 +9,7 @@ model = runModel("BTC") #skewt + Gaussian distribution
 runModelSingle("BTC", "t")
 
 model.sigma1
-model.sgima2
+model.sigma2
 model.resids1
 model.resids2
 ```
